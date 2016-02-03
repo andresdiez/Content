@@ -1,9 +1,10 @@
 package com.example.adiez.content;
 
-/**
- * Created by adiez on 2016-02-02.
- */
-public class Data {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Model {
 
     public String addMessage() {
         return null;
@@ -15,8 +16,10 @@ public class Data {
     }
 
 
-    public String getMessage() {
-        return null;
+    public List<Message> getMessage() {
+        List<Message> list= new ArrayList<>();
+        list.add(0,new Message("sad"));
+        return list;
     }
 
 

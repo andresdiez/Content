@@ -5,8 +5,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Data data;
-    private Presenter presenter;
+
 
 
 
@@ -16,9 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        data = new Data();
-        presenter= new Presenter();
-        presenter.setModel(data);
+
 
 
     }

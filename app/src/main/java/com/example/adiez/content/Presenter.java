@@ -1,24 +1,42 @@
 package com.example.adiez.content;
 
-import android.util.Log;
 
-/**
- * Created by adiez on 2016-02-02.
- */
+
+import android.os.Handler;
+
+import java.util.List;
+
+
 public class Presenter {
 
+    private final Receiver receiver;
 
-    Data data;
-
-
-    public void getModel() {
+    public Presenter(Receiver receiver){
+        this.receiver=receiver;
 
     }
 
+    public void updateMessages() {
 
-    public void setModel(Data data) {
-        this.data=data;
     }
+
+    interface Receiver{
+        List<Message> getMessages();
+    }
+
+    interface HandlerInt{
+        Handler launch();
+    }
+
+    public List<Message> getMessages(){
+        return receiver.getMessages();
+    }
+
+    public Handler launch(){
+
+        return null;
+    }
+
 
 
 
