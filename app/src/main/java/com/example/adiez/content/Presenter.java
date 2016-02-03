@@ -21,10 +21,5 @@ public class Presenter {
     }
 
 
-    public static Boolean email(boolean b) {
 
-        Log.e("andres","test");
-
-        return b;
-    }
 }
