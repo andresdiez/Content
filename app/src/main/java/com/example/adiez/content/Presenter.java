@@ -2,7 +2,7 @@ package com.example.adiez.content;
 
 
 
-import android.os.Handler;
+
 
 import java.util.List;
 
@@ -10,32 +10,45 @@ import java.util.List;
 public class Presenter {
 
     private final Receiver receiver;
+    private final Handler handler;
 
-    public Presenter(Receiver receiver){
+    public Presenter(Receiver receiver, Handler handler){
+
         this.receiver=receiver;
-
+        this.handler=handler;
     }
 
-    public void updateMessages() {
-
-    }
 
     interface Receiver{
         List<Message> getMessages();
+        void addMessage(String title, String message, Handler handler);
     }
 
-    interface HandlerInt{
-        Handler launch();
+    interface Handler{
+        void onMessagesReceiver(List<Message> messages);
+        void onDataChange();
     }
 
-    public List<Message> getMessages(){
-        return receiver.getMessages();
+
+
+    public void getMessages(){
+
+        handler.onMessagesReceiver(receiver.getMessages());
+
     }
 
-    public Handler launch(){
+    public void addMessage(String title, String message){
 
-        return null;
+        receiver.addMessage(title, message, handler);
+
     }
+
+
+
+
+
+
+
 
 
 

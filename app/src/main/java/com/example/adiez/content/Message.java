@@ -1,13 +1,15 @@
 package com.example.adiez.content;
 
-/**
- * Created by adiez on 2016-02-03.
- */
+
 public class Message {
 
-    private final String message;
+    public final String message;
+    public final String title;
 
-    public Message(String message) {
+
+    public Message(String title,String message) {
+        this.title=title;
         this.message=message;
+
     }
 }
