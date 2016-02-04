@@ -15,7 +15,7 @@ import java.util.List;
 
 
 
-public class  ListFragment extends Fragment implements View.OnClickListener,Presenter.Handler {
+public class  ListFragment extends Fragment implements View.OnClickListener, Presenter.Handler {
 
 
     private Presenter presenter;
@@ -50,7 +50,9 @@ public class  ListFragment extends Fragment implements View.OnClickListener,Pres
         button.setOnClickListener(this);
 
         title=(EditText) rootView.findViewById(R.id.editText);
+        title.setInputType(1);
         message=(EditText) rootView.findViewById(R.id.editText2);
+        
 
         return rootView;
     }
@@ -80,6 +82,7 @@ public class  ListFragment extends Fragment implements View.OnClickListener,Pres
         adapter.notifyDataSetChanged();
 
     }
+
 
 
 }

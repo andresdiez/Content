@@ -30,7 +30,6 @@ public class Receiver implements Presenter.Receiver {
 
 
 
-
     private class Async extends AsyncTask<String,String,List<Message>>{
 
 
