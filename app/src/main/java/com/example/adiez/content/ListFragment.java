@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
 import java.util.List;
 
 
 
 public class  ListFragment extends Fragment implements View.OnClickListener, Presenter.Handler {
+
 
 
     private Presenter presenter;
@@ -24,6 +24,7 @@ public class  ListFragment extends Fragment implements View.OnClickListener, Pre
     private RecyclerViewAdapter adapter;
     private EditText title;
     private EditText message;
+    Button button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,17 @@ public class  ListFragment extends Fragment implements View.OnClickListener, Pre
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        presenter.getMessages();
+        recyclerView.setOnClickListener(this);
 
-        Button button=(Button)rootView.findViewById(R.id.button);
+
+
+        button=(Button)rootView.findViewById(R.id.button);
         button.setOnClickListener(this);
 
         title=(EditText) rootView.findViewById(R.id.editText);
         title.setInputType(1);
         message=(EditText) rootView.findViewById(R.id.editText2);
+        presenter.getMessages();
         
 
         return rootView;
@@ -62,23 +66,26 @@ public class  ListFragment extends Fragment implements View.OnClickListener, Pre
 
     @Override
     public void onClick(View v) {
+
         presenter.addMessage(title.getText().toString(), message.getText().toString());
         title.setText("");
         message.setText("");
+
 
     }
 
 
     @Override
     public void onMessagesReceiver(List<Message> mess) {
-        adapter=new RecyclerViewAdapter(mess);
+        adapter=new RecyclerViewAdapter(mess,this);
         recyclerView.setAdapter(adapter);
 
     }
 
 
     @Override
-    public void onDataChange() {
+    public void onDataChange(List<Message> messages) {
+        adapter.setNewList(messages);
         adapter.notifyDataSetChanged();
 
     }

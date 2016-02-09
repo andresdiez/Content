@@ -1,14 +1,13 @@
 package com.example.adiez.content;
 
 
-public class Message {
+public class Greeting {
 
-    private long id;
-    public String message;
-    public String title;
+    private int id;
+    private String title;
+    private String message;
 
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -19,4 +18,6 @@ public class Message {
     public String getMessage(){
         return message;
     }
+
+
 }

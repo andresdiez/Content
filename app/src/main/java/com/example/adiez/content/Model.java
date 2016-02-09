@@ -2,32 +2,44 @@ package com.example.adiez.content;
 
 
 
-import java.util.ArrayList;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class Model {
 
-    List<Message> list= new ArrayList<>();
 
 
 
-
-//    public boolean deleteMessage() {
-//        return false;
-//    }
+    public List<Message> getMessage()  {
 
 
-    public List<Message> getMessage() {
+        final String url = "http://172.16.11.20:8080/greeting";
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Message[] m = restTemplate.getForObject(url, Message[].class);
 
-        list.add(0,new Message("title","message"));
-        return list;
+
+
+        return Arrays.asList(m);
     }
 
-    public List<Message> addMessage(String title,String message){
-        list.add(new Message(title,message));
-        return list;
+
+    public static List<Message> addMessage(String title, String message){
+
+        final String url = String.format("http://172.16.11.20:8080/greeting?title=%s&message=%s",title,message);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Message[] m = restTemplate.getForObject(url, Message[].class);
+
+
+        return Arrays.asList(m);
     }
+
+
+
 
 
 
