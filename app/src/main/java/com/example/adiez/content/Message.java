@@ -1,22 +1,28 @@
 package com.example.adiez.content;
 
 
+import android.support.annotation.NonNull;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Message {
 
-    private long id;
-    public String message;
-    public String title;
+    private final long id;
+    @NonNull private final String message;
+    @NonNull private final String title;
 
-
-    public long getId() {
-        return id;
+    @JsonCreator
+    public Message(@JsonProperty("id") long id,
+                   @JsonProperty("message")@NonNull String message,
+                   @JsonProperty("title") @NonNull String title) {
+        this.id = id;
+        this.message = message;
+        this.title = title;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public long getId() {return id;}
 
-    public String getMessage(){
-        return message;
-    }
+    public String getTitle() {return title;}
+
+    public String getMessage(){return message;}
 }

@@ -1,8 +1,6 @@
 package com.example.adiez.content;
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.itemData=messages;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder  {
 
 
 
@@ -36,25 +34,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
 
+
+
             title = (TextView) itemLayoutView.findViewById(R.id.textView2);
             message = (TextView) itemLayoutView.findViewById(R.id.textView);
-            itemLayoutView.setOnClickListener(this);
+            itemLayoutView.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Communicator com=(Communicator)v.getContext();
+                            com.launchFragment(getAdapterPosition());
+
+                        }
+                    }
+            );
         }
 
-        @Override
-        public void onClick(View v) {
-            Bundle args = new Bundle();
-            args.putString("title", itemData.get(getAdapterPosition()).title);
-            args.putString("message", itemData.get(getAdapterPosition()).message);
-            DetailFragment detailFragment=new DetailFragment();
-            detailFragment.setArguments(args);
-            activity.getActivity().getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_layout, detailFragment , "tag")
-                    .addToBackStack(null)
-                    .commit();
-
-        }
 
     }
 
@@ -73,8 +68,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
 
-        holder.title.setText(itemData.get(position).title);
-        holder.message.setText(itemData.get(position).message);
+        holder.title.setText(itemData.get(position).getTitle());
+        holder.message.setText(itemData.get(position).getMessage());
 
     }
 

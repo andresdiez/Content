@@ -63,5 +63,6 @@ dependencies {
 
 
 
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.5'
 }
 

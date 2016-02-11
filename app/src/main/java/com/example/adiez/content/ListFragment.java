@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class  ListFragment extends Fragment implements View.OnClickListener, Presenter.Handler {
+public class  ListFragment extends Fragment implements Presenter.Handler {
 
 
 
@@ -38,19 +40,29 @@ public class  ListFragment extends Fragment implements View.OnClickListener, Pre
 
 
 
-        View rootView = inflater.inflate(R.layout.list_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.list_fragment, container, false);
+
+        final View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.addMessage(title.getText().toString(), message.getText().toString());
+                title.setText("");
+                message.setText("");
+            }
+        };
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.view);
         LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setOnClickListener(this);
-
+        recyclerView.setOnClickListener(clickListener);
+        adapter=new RecyclerViewAdapter(new ArrayList<Message>(),this);
+        recyclerView.setAdapter(adapter);
 
 
         button=(Button)rootView.findViewById(R.id.button);
-        button.setOnClickListener(this);
+        button.setOnClickListener(clickListener);
 
         title=(EditText) rootView.findViewById(R.id.editText);
         title.setInputType(1);
@@ -62,34 +74,12 @@ public class  ListFragment extends Fragment implements View.OnClickListener, Pre
     }
 
 
-
-
-    @Override
-    public void onClick(View v) {
-
-        presenter.addMessage(title.getText().toString(), message.getText().toString());
-        title.setText("");
-        message.setText("");
-
-
-    }
-
-
-    @Override
-    public void onMessagesReceiver(List<Message> mess) {
-        adapter=new RecyclerViewAdapter(mess,this);
-        recyclerView.setAdapter(adapter);
-
-    }
-
-
     @Override
     public void onDataChange(List<Message> messages) {
         adapter.setNewList(messages);
         adapter.notifyDataSetChanged();
 
     }
-
 
 
 }

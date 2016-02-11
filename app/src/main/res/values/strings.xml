@@ -3,4 +3,6 @@
     <string name="button">Send</string>
     <string name="title">Title</string>
     <string name="message">Message</string>
+    <string name="save">Save</string>
+    <string name="addmessage">Add Message</string>
 </resources>

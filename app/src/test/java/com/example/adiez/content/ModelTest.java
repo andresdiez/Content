@@ -12,7 +12,7 @@ public class ModelTest {
 
         Model m= new Model();
 
-        m.getMessage();
+        m.getMessages();
         System.out.print(m.addMessage("","").get(0).message);
 
     }

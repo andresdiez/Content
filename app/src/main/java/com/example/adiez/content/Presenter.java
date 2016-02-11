@@ -19,13 +19,14 @@ public class Presenter {
     }
 
 
+
+
     interface Receiver{
         void getMessages(Handler handler);
         void addMessage(String title, String message, Handler handler);
     }
 
     interface Handler{
-        void onMessagesReceiver(List<Message> messages);
         void onDataChange(List<Message> messages);
     }
 

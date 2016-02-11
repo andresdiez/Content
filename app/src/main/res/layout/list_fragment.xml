@@ -6,7 +6,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/addmessage"
         android:id="@+id/button"
         android:layout_below="@+id/editText2"
         android:layout_alignParentEnd="true" />

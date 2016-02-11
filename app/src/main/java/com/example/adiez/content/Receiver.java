@@ -62,14 +62,14 @@ public class Receiver implements Presenter.Receiver {
         }
         @Override
         protected List<Message> doInBackground(String... params) {
-            return model.getMessage();
+            return model.getMessages();
         }
 
 
         @Override
         protected void onPostExecute(List<Message> messages) {
             super.onPostExecute(messages);
-            handler.onMessagesReceiver(messages);
+            handler.onDataChange(messages);
         }
     }
 

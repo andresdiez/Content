@@ -1,12 +1,13 @@
 package com.example.adiez.content;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements Communicator{
 
 
 
@@ -15,14 +16,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (savedInstanceState==null){
         ListFragment hello = new ListFragment();
-        fragmentTransaction.add(R.id.main_layout , hello, "HELLO");
-        fragmentTransaction.commit();
-
-
-
+        changeFragment(hello,false);
+        }
 
     }
 
@@ -38,5 +36,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void launchFragment(int i) {
+        DetailFragment fr = new DetailFragment();
+        fr.setPosition(i);
+        changeFragment(fr,true);
+    }
+
+
+    public void changeFragment(final Fragment fragment,boolean addToBackStack){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_layout , fragment);
+        if (addToBackStack){fragmentTransaction.addToBackStack(null);}
+        fragmentTransaction.commit();
+
+    }
 
 }

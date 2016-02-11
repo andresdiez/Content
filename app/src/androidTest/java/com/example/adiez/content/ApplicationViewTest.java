@@ -19,13 +19,17 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class ApplicationViewTest{
 
 
+    /**
+     *
+     */
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
 
     @Test
     public void changeText_sameActivity() {
-        // Type text and then press the button.
+
         onView(withId(R.id.editText)).perform(typeText("Title"), click());
         onView(withId(R.id.editText2)).perform(typeText("Message"), click());
         onView(withId(R.id.button))

@@ -1,1 +1,1 @@
-include ':app', ':sping'
+include ':app', ':spring'
