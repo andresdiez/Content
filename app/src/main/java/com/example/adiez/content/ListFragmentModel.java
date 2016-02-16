@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Model {
+public class ListFragmentModel {
 
 
     private String url = "http://172.16.11.20:8080/greeting";
@@ -17,7 +17,7 @@ public class Model {
     Class<Message[]> object = Message[].class;
 
 
-    public Model(){
+    public ListFragmentModel(){
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
     }

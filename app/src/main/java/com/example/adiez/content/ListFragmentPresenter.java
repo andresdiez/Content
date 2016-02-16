@@ -4,15 +4,17 @@ package com.example.adiez.content;
 
 
 
+import android.content.SharedPreferences;
+
 import java.util.List;
 
 
-public class Presenter {
+public class ListFragmentPresenter {
 
     private final Receiver receiver;
     private final Handler handler;
 
-    public Presenter(Receiver receiver, Handler handler){
+    public ListFragmentPresenter(Receiver receiver, Handler handler){
 
         this.receiver=receiver;
         this.handler=handler;
@@ -41,6 +43,7 @@ public class Presenter {
     public void getMessages(){handler.onDataChange(receiver.getMessages());}
 
     public void addMessage(String title, String message){ receiver.addMessage(title, message, handler); }
+
 
 
 

@@ -7,11 +7,11 @@ import android.os.AsyncTask;
 import java.util.List;
 
 
-public class Receiver implements Presenter.Receiver {
+public class ListFragmentReceiver implements ListFragmentPresenter.Receiver {
 
-    private final Model model;
+    private final ListFragmentModel model;
 
-    public Receiver(Model model) {
+    public ListFragmentReceiver(ListFragmentModel model) {
         this.model=model;
     }
 
@@ -21,12 +21,12 @@ public class Receiver implements Presenter.Receiver {
     }
 
     @Override
-    public void addMessage(String title, String message, Presenter.Handler handler){
+    public void addMessage(String title, String message, ListFragmentPresenter.Handler handler){
         new Async(handler).execute(title, message);
     }
 
     @Override
-    public void loadMessages(final Presenter.Handler handler) {
+    public void loadMessages(final ListFragmentPresenter.Handler handler) {
         new Async2(handler).execute();
 
 
@@ -41,9 +41,9 @@ public class Receiver implements Presenter.Receiver {
     private class Async extends AsyncTask<String,String,List<Message>>{
 
 
-        private final Presenter.Handler handler;
+        private final ListFragmentPresenter.Handler handler;
 
-        public Async(Presenter.Handler handler) {
+        public Async(ListFragmentPresenter.Handler handler) {
             this.handler=handler;
         }
 
@@ -67,8 +67,8 @@ public class Receiver implements Presenter.Receiver {
 
     private class Async2 extends AsyncTask<String,String,Void>{
 
-        Presenter.Handler handler;
-        public Async2(Presenter.Handler handler){
+        ListFragmentPresenter.Handler handler;
+        public Async2(ListFragmentPresenter.Handler handler){
             this.handler=handler;
         }
         @Override

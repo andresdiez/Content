@@ -7,11 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,12 +20,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
-public class  ListFragment extends Fragment implements Presenter.Handler {
-
+import static android.view.View.*;
 
 
-    private Presenter presenter;
+public class  ListFragment extends Fragment implements ListFragmentPresenter.Handler {
+
+
+
+    private ListFragmentPresenter presenter;
 
     @Bind(R.id.button) Button button;
     @Bind(R.id.view) RecyclerView recyclerView;
@@ -43,7 +43,7 @@ public class  ListFragment extends Fragment implements Presenter.Handler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new Presenter(new Receiver(new Model()),this);
+        presenter = new ListFragmentPresenter(new ListFragmentReceiver(new ListFragmentModel()),this);
         presenter.loadMessages();
 
     }
@@ -57,7 +57,7 @@ public class  ListFragment extends Fragment implements Presenter.Handler {
         final View rootView = inflater.inflate(R.layout.list_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
-        final View.OnClickListener clickListener = new View.OnClickListener() {
+        final OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String strTitle=title.getText().toString();

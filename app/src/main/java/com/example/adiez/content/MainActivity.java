@@ -3,7 +3,6 @@ package com.example.adiez.content;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,23 +15,23 @@ public class MainActivity extends AppCompatActivity implements Communicator{
 
 
     public DetailFragment fr;
-    ListFragment hello = new ListFragment();
+    ListFragment listFragment = new ListFragment();
     private BroadcastReceiver receiver;
-    private final int NOTIFICATION_ID=0;
     IntentFilter filter = new IntentFilter();
+    SharedPreferences sp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
 
-        if (savedInstanceState==null){ changeFragment(hello,false); }
+        if (savedInstanceState==null){ changeFragment(listFragment,false); }
 
 
         //background service filter
-
-        filter.addAction("com.hello.action");
+        filter.addAction("com.listFragment.action");
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -43,17 +42,9 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         };
         registerReceiver(receiver,filter);
 
-
-
-
-
         //background service
         Intent intent = new Intent(this, ContentBackService.class);
         startService(intent);
-
-
-
-
 
 
     }
@@ -62,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            if (fr.getStatus()){hello.reloadData();}
+            if (fr.getStatus()){listFragment.reloadData();}
             fr=null;
             fm.popBackStack();
         } else {
@@ -80,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
 
     @Override
     public void reloadFragment() {
-        hello.reloadData();
+        listFragment.reloadData();
         fr=null;
     }
 
@@ -103,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     protected void onStart(){
         super.onStart();
         // Store our shared preference
-        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
         ed.commit();
@@ -116,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         super.onStop();
 
         // Store our shared preference
-        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
         ed.commit();

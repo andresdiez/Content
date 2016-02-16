@@ -13,7 +13,7 @@ public class ModelTest {
     public void addMessageValidator(){
 
 
-        Model m= mock(Model.class);
+        ListFragmentModel m= mock(ListFragmentModel.class);
         when(m.getMessages()).thenReturn(Arrays.asList(new Message(1, "asd", "asdas")));
         m.getMessages();
         m.loadMessages();

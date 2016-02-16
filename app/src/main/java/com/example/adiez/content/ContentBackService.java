@@ -47,7 +47,7 @@ public class ContentBackService extends Service{
     public void loadData(){
         Intent local = new Intent();
         local.putExtra("test",true);
-        local.setAction("com.hello.action");
+        local.setAction("com.listFragment.action");
         this.sendBroadcast(local);
     }
 
@@ -75,7 +75,7 @@ public class ContentBackService extends Service{
 
         @Override
         protected Void doInBackground(Void... params) {
-            Model m=new Model();
+            ListFragmentModel m=new ListFragmentModel();
             m.loadMessages();
             List<Message> old=m.getMessages();
 
