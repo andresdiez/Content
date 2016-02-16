@@ -13,7 +13,7 @@ public class Message {
 
     @JsonCreator
     public Message(@JsonProperty("id") long id,
-                   @JsonProperty("message")@NonNull String message,
+                   @JsonProperty("message") @NonNull String message,
                    @JsonProperty("title") @NonNull String title) {
         this.id = id;
         this.message = message;

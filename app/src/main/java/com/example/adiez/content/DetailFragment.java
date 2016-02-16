@@ -1,6 +1,8 @@
 package com.example.adiez.content;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,18 +14,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class DetailFragment extends Fragment implements DetailFragmentPresenter.DetailView{
 
 
     DetailFragmentPresenter presenter;
     private int i;
-    private boolean dataHasChange =false;
+    public boolean dataHasChange =false;
+    private boolean status=false;
 
-    TextView title;
-    TextView message;
-    EditText eMessage;
-    EditText eTitle;
-    Button saveButton;
+    @Bind(R.id.button2) Button saveButton;
+    @Bind(R.id.textView3) TextView title;
+    @Bind(R.id.textView4) TextView message;
+    @Bind(R.id.editText3) EditText eTitle;
+    @Bind(R.id.editText4) EditText eMessage;
+
 
 
     @Override
@@ -47,8 +54,31 @@ public class DetailFragment extends Fragment implements DetailFragmentPresenter.
             editMessage();
             return true;
         }
+        else if (id == R.id.action_delete){
+            deleteMessage();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void deleteMessage() {
+        new AlertDialog.Builder(this.getActivity())
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        presenter.deleteMessage();
+                        status=true;
+                        getActivity().onBackPressed();
+
+
+
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 
@@ -56,12 +86,7 @@ public class DetailFragment extends Fragment implements DetailFragmentPresenter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView=inflater.inflate(R.layout.detail_fragment, container, Boolean.parseBoolean(null));
-        title=(TextView)rootView.findViewById(R.id.textView3);
-        message=(TextView)rootView.findViewById(R.id.textView4);
-        eTitle=(EditText)rootView.findViewById(R.id.editText3);
-        eMessage =(EditText)rootView.findViewById(R.id.editText4);
-        saveButton=(Button)rootView.findViewById(R.id.button2);
-
+        ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -74,10 +99,12 @@ public class DetailFragment extends Fragment implements DetailFragmentPresenter.
     public void displayMessage(String t, String m) {
         title.setText(t);
         message.setText(m);
+
     }
 
 
     public void editMessage(){
+
         eTitle.setText(presenter.getTitle());
         eMessage.setText(presenter.getMessage());
 
@@ -91,9 +118,11 @@ public class DetailFragment extends Fragment implements DetailFragmentPresenter.
                         presenter.onDataChange();
                         getActivity().findViewById(R.id.relative1).setVisibility(getView().GONE);
                         dataHasChange = true;
+
                     }
                 }
         );
+
 
     }
 
@@ -101,9 +130,16 @@ public class DetailFragment extends Fragment implements DetailFragmentPresenter.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (dataHasChange){presenter.saveData();}
+        Communicator com=(Communicator)getActivity();
+        if (dataHasChange){presenter.saveData(com);}
+
+
+
     }
 
+    public boolean getStatus(){
+        return this.status;
+    }
 
 
 }

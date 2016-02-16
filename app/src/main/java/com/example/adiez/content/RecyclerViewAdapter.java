@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 
 
@@ -14,13 +16,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static ListFragment activity;
 
     public RecyclerViewAdapter(List<Message> itemData, ListFragment activity){
-        this.itemData=itemData;
-        this.activity=activity;
+        RecyclerViewAdapter.itemData =itemData;
+        RecyclerViewAdapter.activity =activity;
 
     }
 
     public void setNewList(List<Message> messages) {
-        this.itemData=messages;
+        itemData=messages;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder  {
@@ -42,12 +44,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             Communicator com=(Communicator)v.getContext();
                             com.launchFragment(getAdapterPosition());
 
                         }
+
                     }
             );
+
+            itemLayoutView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(v.getContext()
+                            , "Title and message must have a body"
+                            , Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+
+
+            });
+
         }
 
 

@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class  ListFragment extends Fragment implements Presenter.Handler {
@@ -22,16 +29,23 @@ public class  ListFragment extends Fragment implements Presenter.Handler {
 
     private Presenter presenter;
 
-    private RecyclerView recyclerView;
+    @Bind(R.id.button) Button button;
+    @Bind(R.id.view) RecyclerView recyclerView;
+    @Bind(R.id.editText) EditText title;
+    @Bind(R.id.editText2) EditText message;
+
     private RecyclerViewAdapter adapter;
-    private EditText title;
-    private EditText message;
-    Button button;
+
+    public boolean loaded=false;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new Presenter(new Receiver(new Model()),this);
+        presenter.loadMessages();
+
     }
 
     @Override
@@ -41,17 +55,29 @@ public class  ListFragment extends Fragment implements Presenter.Handler {
 
 
         final View rootView = inflater.inflate(R.layout.list_fragment, container, false);
+        ButterKnife.bind(this, rootView);
 
         final View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.addMessage(title.getText().toString(), message.getText().toString());
-                title.setText("");
-                message.setText("");
+                String strTitle=title.getText().toString();
+                String strMessage=message.getText().toString();
+                if (strTitle.equals("")||strMessage.equals("")){
+                    Toast.makeText(getActivity()
+                            ,"Title and message must have a body"
+                            ,Toast.LENGTH_LONG).show();
+
+                }
+                else {
+                    presenter.addMessage(strTitle, strMessage);
+                    title.setText("");
+                    message.setText("");
+                }
             }
+
         };
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.view);
+
         LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -61,25 +87,57 @@ public class  ListFragment extends Fragment implements Presenter.Handler {
         recyclerView.setAdapter(adapter);
 
 
-        button=(Button)rootView.findViewById(R.id.button);
+
         button.setOnClickListener(clickListener);
 
-        title=(EditText) rootView.findViewById(R.id.editText);
-        title.setInputType(1);
-        message=(EditText) rootView.findViewById(R.id.editText2);
-        presenter.getMessages();
-        
+
+
+
+        message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    button.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        if (loaded){presenter.getMessages();}
+
+
+
 
         return rootView;
     }
+
+
+
 
 
     @Override
     public void onDataChange(List<Message> messages) {
         adapter.setNewList(messages);
         adapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(messages.size() - 1);
+
 
     }
+
+
+
+    @Override
+    public void dataDidLoad() {
+        presenter.getMessages();
+        loaded=true;
+        //getActivity().service.fr=this
+    }
+
+
+    public void reloadData() { presenter.loadMessages(); }
+
 
 
 }

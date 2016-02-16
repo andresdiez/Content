@@ -22,23 +22,25 @@ public class Presenter {
 
 
     interface Receiver{
-        void getMessages(Handler handler);
+        List<Message> getMessages();
         void addMessage(String title, String message, Handler handler);
+        void loadMessages(Handler handler);
     }
 
     interface Handler{
         void onDataChange(List<Message> messages);
+        void dataDidLoad();
     }
 
 
 
-    public void getMessages(){
-        receiver.getMessages(handler);
+    public void loadMessages() {
+        receiver.loadMessages(handler);
     }
 
-    public void addMessage(String title, String message){
-        receiver.addMessage(title, message, handler);
-    }
+    public void getMessages(){handler.onDataChange(receiver.getMessages());}
+
+    public void addMessage(String title, String message){ receiver.addMessage(title, message, handler); }
 
 
 

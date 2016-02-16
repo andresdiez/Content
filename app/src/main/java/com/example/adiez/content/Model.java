@@ -11,35 +11,32 @@ import java.util.List;
 public class Model {
 
 
+    private String url = "http://172.16.11.20:8080/greeting";
+    private RestTemplate restTemplate = new RestTemplate();
+    private List<Message> messages;
+    Class<Message[]> object = Message[].class;
 
 
-    public List<Message> getMessages()  {
-
-
-        final String url = "http://172.16.11.20:8080/greeting";
-        RestTemplate restTemplate = new RestTemplate();
+    public Model(){
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        Message[] m = restTemplate.getForObject(url, Message[].class);
 
-
-        return Arrays.asList(m);
     }
 
 
-    public static List<Message> addMessage(String title, String message){
-
-        final String url = String.format("http://172.16.11.20:8080/greeting?title=%s&message=%s",title,message);
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        Message[] m = restTemplate.getForObject(url, Message[].class);
+    public List<Message> getMessages()  { return messages; }
 
 
-        return Arrays.asList(m);
+    public void addMessage(String title, String message){
+
+        String urlCalls="?title="+title+"&message="+message;
+        this.messages=Arrays.asList(restTemplate.getForObject(url+urlCalls, object));
+
     }
 
 
-
-
+    public void loadMessages() {
+        this.messages=Arrays.asList(restTemplate.getForObject(url, object));
+    }
 
 
 }
