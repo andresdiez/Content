@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
@@ -45,6 +44,7 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
         super.onCreate(savedInstanceState);
         presenter = new ListFragmentPresenter(new ListFragmentReceiver(new ListFragmentModel()),this);
         presenter.loadMessages();
+
 
     }
 
@@ -92,7 +92,6 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
 
 
 
-
         message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -110,8 +109,10 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
 
 
 
+
         return rootView;
     }
+
 
 
 
@@ -122,9 +123,8 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
         adapter.setNewList(messages);
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(messages.size() - 1);
-
-
     }
+
 
 
 

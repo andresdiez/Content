@@ -53,6 +53,13 @@ public class MessageController {
     }
 
 
+    @RequestMapping("/count")
+    public Count count(){
+        return new Count(id);
+
+    }
+
+
     public void addValue(String title, String message){
         list.add(new Message(id,title,message) );
         id++;

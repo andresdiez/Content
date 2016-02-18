@@ -4,8 +4,6 @@ package com.example.adiez.content;
 
 
 
-import android.content.SharedPreferences;
-
 import java.util.List;
 
 
@@ -18,6 +16,7 @@ public class ListFragmentPresenter {
 
         this.receiver=receiver;
         this.handler=handler;
+
     }
 
 

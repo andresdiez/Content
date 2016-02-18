@@ -3,7 +3,6 @@ package com.example.adiez.content;
 
 
 import android.os.AsyncTask;
-
 import java.util.List;
 
 

@@ -10,6 +10,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import com.example.adiez.content.model.Model;
 
 public class MainActivity extends AppCompatActivity implements Communicator{
 
@@ -40,11 +43,17 @@ public class MainActivity extends AppCompatActivity implements Communicator{
 
             }
         };
-        registerReceiver(receiver,filter);
+        registerReceiver(receiver, filter);
 
         //background service
         Intent intent = new Intent(this, ContentBackService.class);
         startService(intent);
+
+        Model m=new Model();
+        m.loadModel();
+
+        //Toast.makeText(this,Model.getMessage(0),Toast.LENGTH_LONG).show();
+
 
 
     }
@@ -96,19 +105,20 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         // Store our shared preference
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
-        ed.commit();
+        ed.apply();
     }
 
 
     @Override
     protected void onStop() {
-
-        super.onStop();
-
         // Store our shared preference
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        ed.commit();
+        ed.apply();
+        super.onStop();
+
+
+
     }
     @Override
     protected void onDestroy() {
