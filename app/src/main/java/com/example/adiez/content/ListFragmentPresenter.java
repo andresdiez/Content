@@ -1,57 +1,30 @@
 package com.example.adiez.content;
 
-
-
-
-
+import com.example.adiez.content.model.Handler;
+import com.example.adiez.content.model.Message;
+import com.example.adiez.content.model.Receiver;
 import java.util.List;
 
 
-public class ListFragmentPresenter {
+public class ListFragmentPresenter implements CallBack {
 
     private final Receiver receiver;
     private final Handler handler;
 
-    public ListFragmentPresenter(Receiver receiver, Handler handler){
-
+    public ListFragmentPresenter(Handler handler,Receiver receiver){
         this.receiver=receiver;
         this.handler=handler;
-
     }
 
 
+    public void build(){ receiver.loadModel(this); }
 
+    public void addMessage(String title, String message){ receiver.addMessage(title, message, this); }
 
-    interface Receiver{
-        List<Message> getMessages();
-        void addMessage(String title, String message, Handler handler);
-        void loadMessages(Handler handler);
-    }
+    public List<Message> getList(){ return receiver.getMessages(); }
 
-    interface Handler{
-        void onDataChange(List<Message> messages);
-        void dataDidLoad();
-    }
-
-
-
-    public void loadMessages() {
-        receiver.loadMessages(handler);
-    }
-
-    public void getMessages(){handler.onDataChange(receiver.getMessages());}
-
-    public void addMessage(String title, String message){ receiver.addMessage(title, message, handler); }
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void updateView() { handler.dataDidLoad( receiver.getMessages() ); }
 
 
 }

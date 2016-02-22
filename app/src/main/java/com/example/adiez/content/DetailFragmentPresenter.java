@@ -1,66 +1,38 @@
 package com.example.adiez.content;
 
 
-public class DetailFragmentPresenter {
+import android.app.Activity;
 
-    private final DetailModel model;
-    private final DetailView view;
+import com.example.adiez.content.model.Handler;
+import com.example.adiez.content.model.Message;
+import com.example.adiez.content.model.Receiver;
 
+public class DetailFragmentPresenter{
 
-
-    public DetailFragmentPresenter(DetailFragmentModel model,DetailFragment view) {
-
-        this.model=model;
-        this.view=view;
-
-
-    }
-
-    public void onDataChange() { view.displayMessage(model.getTitle(), model.getMessage()); }
-
-    public void saveData(Communicator com) { model.saveAllData(com); }
-
-    public void displayMessage(int i){ model.setData(i, view);}
-
-    public String getTitle(){ return model.getTitle(); }
-
-    public void setTitle(String title) { model.setTitle(title); }
-
-    public String getMessage(){ return model.getMessage(); }
-
-    public void setMessage(String message) { model.setMessage(message); }
-
-    public void deleteMessage() {model.deleteMessage();}
+    private final Handler handler;
+    private final Receiver receiver;
 
 
-    interface DetailView{
 
-        void displayMessage(String t,String m);
+    public DetailFragmentPresenter(Handler handler, Receiver receiver) {
+        this.handler = handler;
+        this.receiver = receiver;
 
     }
 
-
-    interface DetailModel {
-
-        void setData(int i, DetailView view);
-
-        String getMessage();
-
-        void setMessage(String message);
-
-        String getTitle();
-
-        void setTitle(String title);
-
-        void saveAllData(Communicator com);
-
-        void deleteMessage();
+    public void displayMessage(int i){
+        Message m=receiver.getMessage(i);
+        handler.displayMessage(m.getTitle(),m.getMessage());
     }
 
+    public void onDataChange(int i, String t, String m) {
+        receiver.editMessage(i, t, m);
+        handler.displayMessage(t, m);
+    }
 
-
-
-
+    public void deleteMessage(int i, Activity activity) {
+        receiver.deleteMessage(i,activity);
+    }
 
 
 }

@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adiez.content.model.Message;
+
+import java.util.ArrayList;
 import java.util.List;
 
 

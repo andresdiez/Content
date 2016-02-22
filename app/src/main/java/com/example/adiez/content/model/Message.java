@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Message {
     private final long id;
-    @NonNull
-    private final String message;
+    @NonNull private final String message;
     @NonNull private final String title;
 
     @JsonCreator

@@ -1,8 +1,6 @@
 package com.example;
 
-/**
- * Created by adiez on 2016-02-09.
- */
+
 public class Message {
 
     private final long id;

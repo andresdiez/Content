@@ -14,7 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
+import com.example.adiez.content.model.Handler;
+import com.example.adiez.content.model.Message;
+import com.example.adiez.content.model.Model;
+
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,11 +25,11 @@ import butterknife.ButterKnife;
 import static android.view.View.*;
 
 
-public class  ListFragment extends Fragment implements ListFragmentPresenter.Handler {
+public class  ListFragment extends Fragment implements Handler {
 
 
 
-    private ListFragmentPresenter presenter;
+
 
     @Bind(R.id.button) Button button;
     @Bind(R.id.view) RecyclerView recyclerView;
@@ -34,17 +37,17 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
     @Bind(R.id.editText2) EditText message;
 
     private RecyclerViewAdapter adapter;
-
-    public boolean loaded=false;
-
+    private ListFragmentPresenter presenter;
+    private Model model;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ListFragmentPresenter(new ListFragmentReceiver(new ListFragmentModel()),this);
-        presenter.loadMessages();
 
+        presenter = new ListFragmentPresenter( this , model );
+        presenter.build();
+        adapter=new RecyclerViewAdapter(presenter.getList() ,this);
 
     }
 
@@ -53,45 +56,17 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
                              Bundle savedInstanceState) {
 
 
+        View rootView = inflater.inflate(R.layout.list_fragment, container, false);
 
-        final View rootView = inflater.inflate(R.layout.list_fragment, container, false);
         ButterKnife.bind(this, rootView);
-
-        final OnClickListener clickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String strTitle=title.getText().toString();
-                String strMessage=message.getText().toString();
-                if (strTitle.equals("")||strMessage.equals("")){
-                    Toast.makeText(getActivity()
-                            ,"Title and message must have a body"
-                            ,Toast.LENGTH_LONG).show();
-
-                }
-                else {
-                    presenter.addMessage(strTitle, strMessage);
-                    title.setText("");
-                    message.setText("");
-                }
-            }
-
-        };
-
-
         LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setOnClickListener(clickListener);
-        adapter=new RecyclerViewAdapter(new ArrayList<Message>(),this);
+
         recyclerView.setAdapter(adapter);
 
-
-
         button.setOnClickListener(clickListener);
-
-
-
         message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -103,40 +78,53 @@ public class  ListFragment extends Fragment implements ListFragmentPresenter.Han
             }
         });
 
-
-        if (loaded){presenter.getMessages();}
-
-
-
-
-
         return rootView;
     }
 
 
 
-
-
-
     @Override
-    public void onDataChange(List<Message> messages) {
+    public void dataDidLoad(List<Message> messages) {
         adapter.setNewList(messages);
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(messages.size() - 1);
     }
 
+    @Override
+    public void displayMessage(String t, String m) {
 
-
+    }
 
     @Override
-    public void dataDidLoad() {
-        presenter.getMessages();
-        loaded=true;
-        //getActivity().service.fr=this
+    public void registerModel(Model model) {
+        this.model = model;
     }
 
 
-    public void reloadData() { presenter.loadMessages(); }
+    final OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String strTitle=title.getText().toString();
+            String strMessage=message.getText().toString();
+            if (strTitle.equals("")||strMessage.equals("")){
+                Toast.makeText(getActivity()
+                        ,"Title and message must have a body"
+                        ,Toast.LENGTH_LONG).show();
+
+            }
+            else {
+                presenter.addMessage(strTitle, strMessage);
+                title.setText("");
+                message.setText("");
+            }
+        }
+
+    };
+
+
+
+
+
 
 
 

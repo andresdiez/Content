@@ -13,6 +13,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.adiez.content.model.Message;
+
 import java.util.List;
 
 
@@ -75,33 +77,8 @@ public class ContentBackService extends Service{
 
         @Override
         protected Void doInBackground(Void... params) {
-            ListFragmentModel m=new ListFragmentModel();
-            m.loadMessages();
-            List<Message> old=m.getMessages();
 
-            while (true){
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                m.loadMessages();
-                if (old.size()<m.getMessages().size())
-                {
-                    old=m.getMessages();
-                    SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-                    boolean ma = sp.getBoolean("active", false);
-                    Log.e("andres", ma + "");
-                    if (ma) {
-                        loadData();
-                    } else {
-                        pushNotification();
-                    }
-                }
-
-
-
-            }
+            return null;
 
         }
 

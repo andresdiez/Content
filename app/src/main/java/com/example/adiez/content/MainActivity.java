@@ -10,16 +10,17 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.example.adiez.content.model.Model;
+import com.squareup.leakcanary.LeakCanary;
+
 
 public class MainActivity extends AppCompatActivity implements Communicator{
 
 
-    public DetailFragment fr;
+    DetailFragment detailFragment = new DetailFragment();
     ListFragment listFragment = new ListFragment();
-    private BroadcastReceiver receiver;
+    BroadcastReceiver receiver;
     IntentFilter filter = new IntentFilter();
     SharedPreferences sp;
 
@@ -28,8 +29,14 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        LeakCanary.install(this.getApplication());
 
+        Model model=new Model();
+        listFragment.registerModel(model);
+        detailFragment.registerModel(model);
+
+
+        sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         if (savedInstanceState==null){ changeFragment(listFragment,false); }
 
 
@@ -49,10 +56,8 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         Intent intent = new Intent(this, ContentBackService.class);
         startService(intent);
 
-        Model m=new Model();
-        m.loadModel();
 
-        //Toast.makeText(this,Model.getMessage(0),Toast.LENGTH_LONG).show();
+
 
 
 
@@ -62,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            if (fr.getStatus()){listFragment.reloadData();}
-            fr=null;
             fm.popBackStack();
+
+
         } else {
             super.onBackPressed();
         }
@@ -73,15 +78,14 @@ public class MainActivity extends AppCompatActivity implements Communicator{
 
     @Override
     public void launchFragment(int i) {
-        fr = new DetailFragment();
-        fr.setPosition(i);
-        changeFragment(fr, true);
+
+        detailFragment.setPosition(i);
+        changeFragment(detailFragment, true);
     }
 
     @Override
     public void reloadFragment() {
-        listFragment.reloadData();
-        fr=null;
+
     }
 
 
@@ -91,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         fragmentTransaction.replace(R.id.main_layout, fragment);
         if (addToBackStack){fragmentTransaction.addToBackStack(null);}
         fragmentTransaction.commit();
-
-
     }
 
 
