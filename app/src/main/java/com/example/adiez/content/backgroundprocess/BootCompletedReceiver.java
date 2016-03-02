@@ -1,4 +1,4 @@
-package com.example.adiez.content;
+package com.example.adiez.content.backgroundprocess;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

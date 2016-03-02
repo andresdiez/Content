@@ -1,4 +1,4 @@
-package com.example.adiez.content.model;
+package com.example;
 
 import android.support.annotation.NonNull;
 

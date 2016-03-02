@@ -20,7 +20,7 @@ public class MessageController {
 
 
     //private int id=0;
-    private final String url="jdbc:mysql://localhost:3306/content";
+    private final String url="jdbc:mysql://localhost:3306/movies";
     private final String username="root";
     private final String password="root";
     private Connection conn;
@@ -63,6 +63,19 @@ public class MessageController {
 
     }
 
+    @RequestMapping("/count")
+    public Count count(){
+        // create a sql connection
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
+            stmt = conn.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return new Count(connect().size());
+
+    }
 
 
 
@@ -74,15 +87,15 @@ public class MessageController {
         try {
 
             String sql;
-            sql = "SELECT * FROM messages";
+            sql = "SELECT * FROM movies_list";
             ResultSet rs = stmt.executeQuery(sql);
 
 
             while(rs.next()){
                 //Retrieve by column name
                 long id  = rs.getInt("id");
-                String title=rs.getString("title");
-                String message=rs.getString("message");
+                String title=rs.getString("name");
+                String message=rs.getString("url");
                 listFromSql.add(new Message(id,title,message) );
 
             }

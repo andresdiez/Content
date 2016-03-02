@@ -10,8 +10,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme2">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +22,14 @@
         </activity>
 
         <service
-            android:name=".ContentBackService"
+            android:name=".backgroundprocess.ContentBackService"
             android:process=":remote"
             />
-        <receiver android:name=".BootCompletedReceiver" >
+        <service
+            android:name=".backgroundprocess.PushNotifications"
+            android:process=":remote2"
+            />
+        <receiver android:name=".backgroundprocess.BootCompletedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

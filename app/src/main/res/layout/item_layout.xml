@@ -9,13 +9,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textView"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:singleLine="true"
         android:maxLength="20"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/imageView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,10 +24,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textView2"
+        android:background="#b1afaf"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_toEndOf="@+id/imageView" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:background="#b1afaf"
-        android:gravity="center_horizontal" />
+        android:scaleType="fitXY" />
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.adiez.content.model;
+package com.example;
 
 import java.util.List;
 

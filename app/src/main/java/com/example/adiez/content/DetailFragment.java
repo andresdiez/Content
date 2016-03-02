@@ -13,28 +13,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.adiez.content.model.Handler;
+import com.example.adiez.content.context.Context;
+import com.example.adiez.content.model.AbstractHandler;
 import com.example.adiez.content.model.Message;
-import com.example.adiez.content.model.Model;
+import com.example.adiez.content.model.ModelImpl;
+
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailFragment extends Fragment implements Handler{
+public class DetailFragment extends Fragment {
 
 
-    DetailFragmentPresenter presenter;
+    private DetailFragmentPresenter  presenter;
     private int i;
 
 
-    @Bind(R.id.button2) Button saveButton;
-    @Bind(R.id.textView3) TextView title;
-    @Bind(R.id.textView4) TextView message;
-    @Bind(R.id.editText3) EditText eTitle;
-    @Bind(R.id.editText4) EditText eMessage;
-    private Model model;
+    @Bind(R.id.button2)  Button saveButton;
+    @Bind(R.id.textView3)  TextView title;
+    @Bind(R.id.textView4)  TextView message;
+    @Bind(R.id.editText3)  EditText eTitle;
+    @Bind(R.id.editText4)  EditText eMessage;
 
 
     @Override
@@ -61,7 +61,8 @@ public class DetailFragment extends Fragment implements Handler{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        presenter=new DetailFragmentPresenter(this,model);
+        presenter= Context.getInstance().provideDetailFragmentPresenter(new Handler());
+        //presenter=new DetailFragmentPresenter(this,model);
     }
 
     @Override
@@ -77,16 +78,6 @@ public class DetailFragment extends Fragment implements Handler{
         this.i=i;
     }
 
-    @Override
-    public void displayMessage(String t, String m) {
-        title.setText(t);
-        message.setText(m);
-
-
-    }
-
-    @Override
-    public void registerModel(Model model) { this.model = model; }
 
 
     public void editMessage(){
@@ -113,24 +104,32 @@ public class DetailFragment extends Fragment implements Handler{
     }
 
 
-
-    @Override
-    public void dataDidLoad(List<Message> messages) {
-
-    }
-
     private void deleteMessage() {
         new AlertDialog.Builder(this.getActivity())
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        presenter.deleteMessage(i,getActivity());
-                        //.onBackPressed();
+                        presenter.deleteMessage(i);
 
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    private class Handler extends AbstractHandler{
+        @Override
+        public void displayMessage(String t, String m) {
+            title.setText(t);
+            message.setText(m);
+        }
+
+        @Override
+        public void goBackToList() { getActivity().onBackPressed(); }
+
+    }
+
+
+
 }

@@ -14,9 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.adiez.content.model.Handler;
+
+import com.example.adiez.content.context.Context;
+import com.example.adiez.content.model.AbstractHandler;
 import com.example.adiez.content.model.Message;
-import com.example.adiez.content.model.Model;
 
 import java.util.List;
 import butterknife.Bind;
@@ -25,27 +26,33 @@ import butterknife.ButterKnife;
 import static android.view.View.*;
 
 
-public class  ListFragment extends Fragment implements Handler {
+@SuppressWarnings("PackageVisibleField")
+public class ListFragment extends Fragment {
 
+    private class Handler extends AbstractHandler {
+        @Override
+        public void dataDidLoad(List<Message> messages) {
+            adapter.setNewList(messages);
+            adapter.notifyDataSetChanged();
+            recyclerView.scrollToPosition(messages.size() - 1);
+        }
+    }
 
-
-
-
-    @Bind(R.id.button) Button button;
+    @Bind(R.id.button) Button addMessageButton;
+    @Bind(R.id.button3) Button liveView;
     @Bind(R.id.view) RecyclerView recyclerView;
     @Bind(R.id.editText) EditText title;
     @Bind(R.id.editText2) EditText message;
 
+
     private RecyclerViewAdapter adapter;
     private ListFragmentPresenter presenter;
-    private Model model;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        presenter = new ListFragmentPresenter( this , model );
+        presenter = Context.getInstance().provideListFragmentPresenter(new Handler());
         presenter.build();
         adapter=new RecyclerViewAdapter(presenter.getList() ,this);
 
@@ -54,24 +61,23 @@ public class  ListFragment extends Fragment implements Handler {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View rootView = inflater.inflate(R.layout.list_fragment, container, false);
 
         ButterKnife.bind(this, rootView);
         LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
+
         recyclerView.setLayoutManager(llm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(adapter);
 
-        button.setOnClickListener(clickListener);
+        addMessageButton.setOnClickListener(addMessageClicked);
+        liveView.setOnClickListener(clickListener2);
         message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    button.performClick();
+                    addMessageButton.performClick();
                     return true;
                 }
                 return false;
@@ -83,25 +89,8 @@ public class  ListFragment extends Fragment implements Handler {
 
 
 
-    @Override
-    public void dataDidLoad(List<Message> messages) {
-        adapter.setNewList(messages);
-        adapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(messages.size() - 1);
-    }
 
-    @Override
-    public void displayMessage(String t, String m) {
-
-    }
-
-    @Override
-    public void registerModel(Model model) {
-        this.model = model;
-    }
-
-
-    final OnClickListener clickListener = new OnClickListener() {
+    private final OnClickListener addMessageClicked = new OnClickListener() {
         @Override
         public void onClick(View v) {
             String strTitle=title.getText().toString();
@@ -122,11 +111,19 @@ public class  ListFragment extends Fragment implements Handler {
     };
 
 
+    private final OnClickListener clickListener2 = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Communicator com=(Communicator)v.getContext();
+            com.launchLiveView();
+        }
+
+    };
 
 
-
-
-
+    public void reload(){
+        presenter.build();
+    }
 
 }
 

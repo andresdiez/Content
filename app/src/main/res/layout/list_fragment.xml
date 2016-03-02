@@ -12,6 +12,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/liveview"
+        android:id="@+id/button3"
+        android:layout_alignParentEnd="true" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +26,8 @@
         android:layout_marginLeft="0dp"
         android:layout_above="@+id/editText"
         android:layout_alignEnd="@+id/button"
-        android:background="#ffffff" />
+        android:background="#ffffff"
+        android:layout_below="@+id/button3" />
 
     <EditText
         android:layout_width="wrap_content"

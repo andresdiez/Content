@@ -1,40 +1,25 @@
-package com.example.adiez.content;
+package com.example.adiez.content.backgroundprocess;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.example.adiez.content.model.Message;
+import com.example.adiez.content.MainActivity;
 
-import java.util.List;
-
-
-public class ContentBackService extends Service{
+public class PushNotifications extends Service {
 
     private final int NOTIFICATION_ID=0;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-
-        //startForeground();
-        new Async().execute();
-        return Service.START_STICKY;
 
     }
 
@@ -45,15 +30,15 @@ public class ContentBackService extends Service{
     }
 
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
-    public void loadData(){
-        Intent local = new Intent();
-        local.putExtra("test",true);
-        local.setAction("com.listFragment.action");
-        this.sendBroadcast(local);
+
+        return Service.START_STICKY;
+
     }
 
-    public void pushNotification(){
+    public boolean pushNotification(){
         Intent intent3 = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent3, 0);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -70,25 +55,8 @@ public class ContentBackService extends Service{
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, n);
+        return true;
     }
-
-
-    private class Async extends AsyncTask <Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            return null;
-
-        }
-
-    }
-
-
-
-
-
-
 
 
 
