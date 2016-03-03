@@ -2,6 +2,7 @@ package com.example.adiez.content;
 
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_layout,parent, false);
+                .inflate(R.layout.item_layout, parent, false);
 
 
         ViewHolder vh = new ViewHolder(v);
@@ -100,9 +101,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.title.setText(itemData.get(position).getTitle());
         holder.message.setText(videoUrl);
-
+        new LoadImg(holder).execute(videoUrl);
 
 //        try {
+//
 //            holder.image.setImageBitmap(retrieveVideoFrameFromVideo(videoUrl));
 //        } catch (Throwable throwable) {
 //            throwable.printStackTrace();
@@ -116,37 +118,66 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public static Bitmap retrieveVideoFrameFromVideo(String videoPath)
-            throws Throwable
-    {
-        Bitmap bitmap = null;
-        MediaMetadataRetriever mediaMetadataRetriever = null;
-        try
-        {
-            mediaMetadataRetriever = new MediaMetadataRetriever();
-            if (Build.VERSION.SDK_INT >= 14)
-                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
-            else
-                mediaMetadataRetriever.setDataSource(videoPath);
-            //   mediaMetadataRetriever.setDataSource(videoPath);
-            bitmap = mediaMetadataRetriever.getFrameAtTime();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw new Throwable(
-                    "Exception in retrieveVideoFrameFromVideo(String videoPath)"
-                            + e.getMessage());
+
+    private class LoadImg extends AsyncTask<String,Void,Bitmap>{
+
+        private final ViewHolder holder;
+
+        public LoadImg(ViewHolder holder) {
+
+            this.holder = holder;
 
         }
-        finally
-        {
-            if (mediaMetadataRetriever != null)
-            {
-                mediaMetadataRetriever.release();
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            try {
+                return retrieveVideoFrameFromVideo(params[0]);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
             }
+            return null;
         }
-        return bitmap;
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            holder.image.setImageBitmap(bitmap);
+        }
+
+        private Bitmap retrieveVideoFrameFromVideo(String videoPath)
+                throws Throwable
+        {
+            Bitmap bitmap = null;
+            MediaMetadataRetriever mediaMetadataRetriever = null;
+            try
+            {
+                mediaMetadataRetriever = new MediaMetadataRetriever();
+                if (Build.VERSION.SDK_INT >= 14)
+                    mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+                else
+                    mediaMetadataRetriever.setDataSource(videoPath);
+                //   mediaMetadataRetriever.setDataSource(videoPath);
+                bitmap = mediaMetadataRetriever.getFrameAtTime();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                throw new Throwable(
+                        "Exception in retrieveVideoFrameFromVideo(String videoPath)"
+                                + e.getMessage());
+
+            }
+            finally
+            {
+                if (mediaMetadataRetriever != null)
+                {
+                    mediaMetadataRetriever.release();
+                }
+            }
+            return bitmap;
+        }
+
+
     }
 
 

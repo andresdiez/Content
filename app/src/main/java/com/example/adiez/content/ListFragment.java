@@ -71,7 +71,7 @@ public class ListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         addMessageButton.setOnClickListener(addMessageClicked);
-        liveView.setOnClickListener(clickListener2);
+        liveView.setOnClickListener(launchLiveView);
         message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -110,7 +110,7 @@ public class ListFragment extends Fragment {
     };
 
 
-    private final OnClickListener clickListener2 = new OnClickListener() {
+    private final OnClickListener launchLiveView = new OnClickListener() {
         @Override
         public void onClick(View v) {
             Communicator com=(Communicator)v.getContext();
