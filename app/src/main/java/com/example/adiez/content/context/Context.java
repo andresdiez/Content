@@ -1,11 +1,12 @@
 package com.example.adiez.content.context;
 
+import com.example.adiez.content.Handler;
 import com.example.adiez.content.DetailFragmentPresenter;
 import com.example.adiez.content.ListFragmentPresenter;
 import com.example.adiez.content.PlayerFragmentPresenter;
-import com.example.adiez.content.model.Handler;
-import com.example.adiez.content.model.Model;
-import com.example.adiez.content.model.ModelImpl;
+import com.redspace.model2.Model;
+import com.redspace.model2.ModelImpl;
+
 
 public class Context {
     private static final Context instance = new Context();

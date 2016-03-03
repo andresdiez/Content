@@ -48,9 +48,9 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public void deleteMessage(int i, Handler handler) {
+    public void deleteMessage(int i, CallBack call) {
         synchronized (messages){
-            new UrlCall( messages ).deleteMessage( i , handler );
+            new UrlCall( messages ).deleteMessage( i , call );
         }
     }
 

@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
 import com.example.adiez.content.context.Context;
-import com.example.adiez.content.model.AbstractHandler;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,7 +52,7 @@ public class PlayerFragment extends Fragment {
     }
 
 
-    private class Handler extends AbstractHandler{
+    private class Handler extends AbstractHandler {
 
         @Override
         public void playVideo(String message) {

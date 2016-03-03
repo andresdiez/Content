@@ -7,16 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.widget.Toast;
-
 import com.example.adiez.content.backgroundprocess.ContentBackService;
-import com.example.adiez.content.backgroundprocess.PushNotifications;
-import com.example.adiez.content.model.ModelImpl;
 import com.squareup.leakcanary.LeakCanary;
 
 
@@ -30,8 +24,6 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     private BroadcastReceiver receiver;
     private IntentFilter filter = new IntentFilter();
 
-
-    ModelImpl model ;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

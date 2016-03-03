@@ -25,7 +25,7 @@ public class ContentBackService extends Service{
 
     private final int NOTIFICATION_ID=0;
     private final String ACTION="com.listFragment.action";
-    private final String url = "http://172.16.11.20:8080/count";
+    private final String url = "http://172.16.9.254:8080/count";
     private final RestTemplate restTemplate = new RestTemplate();
     private final Class<Count> object = Count.class;
 

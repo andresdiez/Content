@@ -1,34 +1,35 @@
 package com.example.adiez.content;
 
-import com.example.adiez.content.model.Handler;
-import com.example.adiez.content.model.Message;
-import com.example.adiez.content.model.Model;
 
-public class DetailFragmentPresenter{
+import com.redspace.model2.CallBack;
+import com.redspace.model2.Message;
+import com.redspace.model2.Model;
+
+public class DetailFragmentPresenter extends CallBack {
 
     private final Handler handler;
-    private final Model receiver;
+    private final Model model;
 
 
 
     public DetailFragmentPresenter(Handler handler, Model receiver) {
         this.handler = handler;
-        this.receiver = receiver;
+        this.model = receiver;
 
     }
 
     public void displayMessage(int i){
-        Message m=receiver.getMessage(i);
+        Message m= model.getMessage(i);
         handler.displayMessage(m.getTitle(),m.getMessage());
     }
 
     public void onDataChange(int i, String t, String m) {
-        receiver.editMessage(i, t, m);
+        model.editMessage(i, t, m);
         handler.displayMessage(t, m);
     }
 
     public void deleteMessage(int i) {
-        receiver.deleteMessage(i,handler);
+        model.deleteMessage(i, this);
     }
 
 

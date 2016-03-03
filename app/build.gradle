@@ -59,5 +59,6 @@ dependencies {
     // or 1.4-beta1
     compile 'me.leolin:ShortcutBadger:1.1.4@aar'
     compile 'com.charonchui.vitamio:vitamio:4.2.2'
+    compile project(':model2')
 }
 

@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.adiez.content.model.Message;
+
+import com.redspace.model2.Message;
 
 import java.util.HashMap;
 import java.util.List;
@@ -101,11 +102,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.message.setText(videoUrl);
 
 
-        try {
-            holder.image.setImageBitmap(retrieveVideoFrameFromVideo(videoUrl));
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+//        try {
+//            holder.image.setImageBitmap(retrieveVideoFrameFromVideo(videoUrl));
+//        } catch (Throwable throwable) {
+//            throwable.printStackTrace();
+//        }
 
     }
 

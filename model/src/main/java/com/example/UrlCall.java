@@ -1,17 +1,15 @@
 package com.example;
 
-import android.os.AsyncTask;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class UrlCall {
-    private final String url = "http://172.16.11.20:8080/greeting";
+    private final String url = "http://172.16.9.254:8080/greeting";
     private final RestTemplate restTemplate = new RestTemplate();
     private final Class<Message[]> object = Message[].class;
     private List<Message> messages;
@@ -23,7 +21,7 @@ public class UrlCall {
     /**
      * Loads data model
      */
-    private abstract class LoadData extends AsyncTask<Void,Void,List<Message>> {
+    private abstract class LoadData extends AsyncTask<List<Message>> {
         private final CallBack callback;
         private Model model;
 
@@ -33,12 +31,12 @@ public class UrlCall {
         }
 
         @Override
-        protected List<Message> doInBackground(Void... params) {
+        protected List<Message> doInBackground() {
             return doOperation();
         }
 
         @Override
-        protected void onPostExecute(List<Message> m) {
+        public void onPostExecute(List<Message> m) {
 
             model.setData(m);
             callback.updateView(m);
@@ -48,6 +46,7 @@ public class UrlCall {
     }
 
     private class LoadTask extends LoadData {
+
         protected LoadTask(CallBack callback, Model model) {
             super(callback,model);
         }
@@ -62,7 +61,7 @@ public class UrlCall {
     /**
      * Send data to server
      */
-    private abstract static class SendData extends AsyncTask<Void,Void,List<Message>>{
+    private abstract static class SendData extends AsyncTask<List<Message>>{
 
         private CallBack callBack;
         private final String t;
@@ -76,13 +75,13 @@ public class UrlCall {
         }
 
         @Override
-        protected List<Message> doInBackground(Void... params) {
+        protected List<Message> doInBackground() {
 
             return doOperation(t,m);
         }
 
         @Override
-        protected void onPostExecute(List<Message> l) {
+        public void onPostExecute(List<Message> l) {
             callBack.updateView(l);
         }
 
@@ -109,24 +108,25 @@ public class UrlCall {
      * Delete data from server
      */
 
-    private abstract class DeleteData extends AsyncTask<Void,Void,Void>{
+    private abstract class DeleteData extends AsyncTask<Void>{
 
         private final int i;
-        private final Handler handler;
+        private CallBack callBack;
 
-        public DeleteData(int i, Handler handler) {
+
+        public DeleteData(int i, CallBack callBack) {
             this.i = i;
-            this.handler = handler;
+            this.callBack = callBack;
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground() {
             doOperation(i);
             return null;
         }
         @Override
-        protected void onPostExecute(Void v) {
-            handler.goBackToList();
+        public void onPostExecute(Void v) {
+            callBack.goBack();
         }
 
         protected abstract void doOperation(int i);
@@ -135,8 +135,8 @@ public class UrlCall {
 
     private class DeleteMessage extends DeleteData{
 
-        public DeleteMessage(int i, Handler handler) {
-            super(i,handler);
+        public DeleteMessage(int i, CallBack callBack) {
+            super(i,callBack);
         }
 
         @Override
@@ -151,7 +151,7 @@ public class UrlCall {
     /**
      * Update data from server
      */
-    private abstract class UpdateData extends AsyncTask<Void,Void,Void>{
+    private abstract class UpdateData extends AsyncTask<Void>{
         private final int i;
         private final String t;
         private final String m;
@@ -164,7 +164,7 @@ public class UrlCall {
         }
 
         @Override
-        protected Void doInBackground(Void... para){
+        protected Void doInBackground(){
             doOperation(i,t,m);
             return null;
         }
@@ -195,8 +195,8 @@ public class UrlCall {
 
     public void addMessage(CallBack callBack,String t,String m){ new SendMessage(callBack,t,m).execute(); }
 
-    public void deleteMessage(int i,Handler handler){
-        new DeleteMessage(i,handler).execute();
+    public void deleteMessage(int i,CallBack callBack){
+        new DeleteMessage(i,callBack).execute();
     }
 
     public void editMessage(int i,String t,String m) {

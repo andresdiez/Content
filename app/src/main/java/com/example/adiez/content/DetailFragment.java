@@ -13,19 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.adiez.content.context.Context;
-import com.example.adiez.content.model.AbstractHandler;
-import com.example.adiez.content.model.Message;
-import com.example.adiez.content.model.ModelImpl;
-
-import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class DetailFragment extends Fragment {
-
-
     private DetailFragmentPresenter  presenter;
     private int i;
 
@@ -118,7 +110,7 @@ public class DetailFragment extends Fragment {
                 .show();
     }
 
-    private class Handler extends AbstractHandler{
+    private class Handler extends AbstractHandler {
         @Override
         public void displayMessage(String t, String m) {
             title.setText(t);

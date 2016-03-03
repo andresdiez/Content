@@ -1,7 +1,7 @@
 package com.example.adiez.content;
 
-import com.example.adiez.content.model.Handler;
-import com.example.adiez.content.model.Model;
+
+import com.redspace.model2.Model;
 
 public class PlayerFragmentPresenter {
     private final Handler handler;

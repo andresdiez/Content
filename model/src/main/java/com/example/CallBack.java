@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.List;
 
-public interface CallBack {
-    void updateView(List<Message> messages);
+public abstract class CallBack {
+    public void updateView(List<Message> messages){}
+    public void goBack(){}
 }

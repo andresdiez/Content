@@ -8,6 +8,6 @@ public interface Model {
     Message getMessage(int i);
     void editMessage(int i, String t, String m);
     List<Message> getMessages();
-    void deleteMessage(int i, Handler handler);
+    void deleteMessage(int i, CallBack call);
     void setData(List<Message> data);
 }

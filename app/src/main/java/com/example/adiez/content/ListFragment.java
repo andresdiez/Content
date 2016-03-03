@@ -15,14 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.adiez.content.context.Context;
-import com.example.adiez.content.model.AbstractHandler;
-import com.example.adiez.content.model.Message;
+import com.redspace.model2.Message;
 
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 import static android.view.View.*;
 
 
@@ -54,7 +53,7 @@ public class ListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = Context.getInstance().provideListFragmentPresenter(new Handler());
         presenter.build();
-        adapter=new RecyclerViewAdapter(presenter.getList() ,this);
+
 
     }
 
