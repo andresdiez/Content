@@ -1,8 +1,7 @@
 package com.example.adiez.content;
 
 
-
-import com.redspace.model2.Message;
+import com.example.Message;
 
 import java.util.List;
 

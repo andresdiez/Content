@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.redspace.model2.Message;
+import com.example.Message;
 
 import java.util.HashMap;
 import java.util.List;

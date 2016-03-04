@@ -3,9 +3,11 @@ package com.example.adiez.content;
 
 
 
-import com.redspace.model2.CallBack;
-import com.redspace.model2.Message;
-import com.redspace.model2.Model;
+
+
+import com.example.CallBack;
+import com.example.Message;
+import com.example.Model;
 
 import java.util.List;
 
